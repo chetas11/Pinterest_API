@@ -13,6 +13,7 @@ app.use(cookieParser())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.json())
 app.options('/addNew', cors())
+app.options('/login', cors())
 
 .get("/", (req, res)=>{ 
     res.send("S")
