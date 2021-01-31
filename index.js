@@ -50,7 +50,31 @@ app.options('/addNew', cors())
     }
     });
  });
-})    
+})
+
+.post("/login", (req, res)=>{                    // match the username and password
+    MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("pinterest");
+            var myquery = { email: req.body.email, password: md5(req.body.password)};
+            dbo.collection("users").find(myquery).toArray(function(err, result) {
+                if (err) throw err;
+                if(result.length === 0 ){
+                    res.send("failed")
+                }else{ 
+                    res.send("success")
+                    // const token =  createToken(req.body.email)  // creating a jwt token for logged in session
+                    // res.cookie("jwt", token,{      //creating cookie to store the token         
+                    //     maxAge: 100000000000,
+                    //     httpOnly: false,
+                    //     secure: false
+                    // });
+                    // res.redirect("/home")
+                }
+                db.close();
+            });
+    });
+})
 
 .listen(process.env.PORT || 8000);
 
