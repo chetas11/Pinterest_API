@@ -37,10 +37,17 @@ app.options('/addNew', cors())
     if (err) throw err;
     var dbo = db.db("pinterest");
     var myobj = {email:req.body.email, password:req.body.password, age:req.body.age};
+    var query = { email: req.body.email }
+    dbo.collection("users").find(query).toArray(function(err, result){
+    if(result.length===0){
     dbo.collection("users").insertOne(myobj, function(err) {
         if (err) throw err;
         res.json(req.body);
         db.close();
+    });
+    }else{
+        throw Error
+    }
     });
  });
 })    
