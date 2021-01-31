@@ -51,7 +51,7 @@ app.options('/login', cors())
         db.close();
     });
     }else{
-        res.status(404) 
+        throw Error
     }
     });
  });
