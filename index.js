@@ -32,14 +32,13 @@ app.options('/addNew', cors())
 
 
 .post("/addNew", cors(), (req,res)=>{
-    console.log(req.body)
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
     var myobj = { email:req.user.email, password:req.user.password, age:req.user.age  };
     dbo.collection("users").insertOne(myobj, function(err) {
         if (err) throw err;
-        res.send("1 document inserted");
+        res.send(req.body);
         db.close();
     });
  });
