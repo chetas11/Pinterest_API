@@ -11,6 +11,7 @@ const url = process.env.MONGO_URL;
 app.use(cors())
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({extended: true}))
+app.use(express.json())
 app.options('/addNew', cors())
 
 .get("/", (req, res)=>{ 
@@ -38,7 +39,7 @@ app.options('/addNew', cors())
     var myobj = {email:req.body, password:req.body, age:req.body};
     dbo.collection("users").insertOne(myobj, function(err) {
         if (err) throw err;
-        res.send(req.body);
+        res.json(req.body);
         db.close();
     });
  });
