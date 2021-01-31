@@ -23,7 +23,7 @@ app
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
-    dbo.collection("users").find({}, function(err, result) {
+    dbo.collection("users").findOne({}, function(err, result) {
         if (err) throw err;
         console.log(result);
         res.send("Success") 
