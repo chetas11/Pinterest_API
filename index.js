@@ -42,15 +42,16 @@ app.options('/login', cors())
     var myobj = {email:req.body.email, password:req.body.password, age:req.body.age};
     var query = { email: req.body.email }
     dbo.collection("users").find(query).toArray(function(err, result){
+    if (err) console.log(err);
     if(result.length===0){
     dbo.collection("users").insertOne(myobj, function(err) {
         if (err) console.log(err);
         res.json(req.body);
-        res.send("success")
+        res.status(200)
         db.close();
     });
     }else{
-        res.send("failure")
+        res.status(404)
     }
     });
  });
