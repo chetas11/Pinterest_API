@@ -5,11 +5,10 @@ const cookieParser = require('cookie-parser')
 require("dotenv").config();
 const cors = require('cors')
 const app = express();
-
-app.use(cors())
-
 const url = process.env.MONGO_URL;
 
+
+app.use(cors())
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({extended: true}))
 
