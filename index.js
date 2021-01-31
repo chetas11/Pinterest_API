@@ -62,6 +62,8 @@ app.options('/login', cors())
                 if (err) throw err;
                 if(result.length === 0 ){
                     res.send("failed")
+                }else{ 
+                    res.send("success")
                 }
                 res.json(req.body);
                 db.close();
