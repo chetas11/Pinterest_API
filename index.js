@@ -11,7 +11,7 @@ const url = process.env.MONGO_URL;
 app.use(cors())
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({extended: true}))
-
+app.options('/addNew', cors())
 
 .get("/", (req, res)=>{ 
     res.send("S")
@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 })
 
 
-.post("/addNew",(req,res)=>{
+.post("/addNew", cors(), (req,res)=>{
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
