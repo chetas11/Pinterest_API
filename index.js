@@ -37,15 +37,15 @@ app.options('/login', cors())
 
 .post("/addNew", cors(), (req,res)=>{
     MongoClient.connect(url, function(err, db) {
-    if (err) console.log(err);
+    if (err) throw Error
     var dbo = db.db("pinterest");
     var myobj = {email:req.body.email, password:req.body.password, age:req.body.age};
     var query = { email: req.body.email }
     dbo.collection("users").find(query).toArray(function(err, result){
-    if (err) console.log(err);
+    if (err) throw Error
     if(result.length===0){
     dbo.collection("users").insertOne(myobj, function(err) {
-        if (err) console.log(err);
+        if (err) throw Error
         res.json(req.body);
         res.status(200)
         db.close();
@@ -59,11 +59,11 @@ app.options('/login', cors())
 
 .post("/login", cors(), (req, res)=>{                    // match the username and password
     MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
-            if (err) console.log(err);
+            if (err) throw Error
             var dbo = db.db("pinterest");
             var myquery = { email: req.body.email, password: req.body.password};
             dbo.collection("users").find(myquery).toArray(function(err, result) {
-               if (err) console.log(err);
+               if (err) throw Error
                 if(result.length === 0 ){
                     res.send("failed")
                 }else{ 
