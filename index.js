@@ -36,14 +36,14 @@ app
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
-    var myobj = { email: req.body.email, password: req.body.password, age:req.body.age  };
+    var myobj = { email:req.email, password:req.password, age:req.age  };
     dbo.collection("users").insertOne(myobj, function(err, res) {
         if (err) throw err;
-        console.log("1 document inserted");
+        res.send("1 document inserted");
         db.close();
     });
  });
 })    
 
-.listen(process.env.PORT);
+.listen(process.env.PORT || 8000);
 
