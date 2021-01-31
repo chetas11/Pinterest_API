@@ -64,6 +64,13 @@ app.options('/login', cors())
                     res.send("failed")
                 }else{ 
                     res.send("success")
+                    // const token =  createToken(req.body.email)  // creating a jwt token for logged in session
+                    // res.cookie("jwt", token,{      //creating cookie to store the token         
+                    //     maxAge: 100000000000,
+                    //     httpOnly: false,
+                    //     secure: false
+                    // });
+                    // res.redirect("/home")
                 }
                 res.json(req.body);
                 db.close();
