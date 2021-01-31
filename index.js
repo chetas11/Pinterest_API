@@ -8,6 +8,8 @@ require("dotenv").config();
 
 const app = express();
 const url = process.env.MONGO_URL;
+
+console.log(url)
 // const url1 = process.env.MONGO_URL1;
 // const password = process.env.MAILPASSWORD;
 // let random = "";
@@ -33,10 +35,10 @@ app
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
-    dbo.collection("users").findOne({}, function(err, result) {
+    dbo.collection("users").find({}, function(err, result) {
         if (err) throw err;
         console.log(result);
-        res.send("Success")
+        res.send("Success") 
         db.close();
     });
     });
