@@ -72,6 +72,7 @@ app.options('/login', cors())
                     // });
                     // res.redirect("/home")
                 }
+                res.json(req.body);
                 db.close();
             });
     });
