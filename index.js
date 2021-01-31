@@ -59,7 +59,6 @@ app.options('/login', cors())
             var dbo = db.db("pinterest");
             var myquery = { email: req.body.email, password: req.body.password};
             dbo.collection("users").find(myquery).toArray(function(err, result) {
-                if (err) throw err;
                 if(result.length === 0 ){
                     res.send("failed")
                 }else{ 
