@@ -11,11 +11,13 @@ app.use(cookieParser())
 app
 .use(bodyParser.urlencoded({extended: true}))
 
-.get("/", (req, res)=>{                                       //Login page                                                                          
+.get("/", (req, res)=>{ 
+    res.header("Access-Control-Allow-Origin","*");                                     //Login page                                                                          
     res.send("S")
 })
 
-.get("/users", (req, res)=>{                                       //Login page                                                                          
+.get("/users", (req, res)=>{  
+    res.header("Access-Control-Allow-Origin","*");                                      //Login page                                                                          
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
@@ -29,6 +31,7 @@ app
 })
 
 .get("/addNew",(req,res)=>{
+    res.header("Access-Control-Allow-Origin","*"); 
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
