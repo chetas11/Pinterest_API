@@ -4,19 +4,16 @@ const MongoClient = require('mongodb');
 const cookieParser = require('cookie-parser')
 require("dotenv").config();
 const cors = require('cors')
-
 const app = express();
+
+app.use(cors())
+
 const url = process.env.MONGO_URL;
 
 app.use(cookieParser())
-app.use(cors())
-app
-.use(bodyParser.urlencoded({extended: true}))
-.use(function(req, res, next){
-    res.header("Access-Control-Allow-Origin", "*")
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-    next()
-})
+app.use(bodyParser.urlencoded({extended: true}))
+
+
 .get("/", (req, res)=>{ 
     res.send("S")
 })
