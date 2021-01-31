@@ -8,10 +8,10 @@ require("dotenv").config();
 
 const app = express();
 const url = process.env.MONGO_URL;
-const url1 = process.env.MONGO_URL1;
-const password = process.env.MAILPASSWORD;
-let random = "";
-let activationString = "";
+// const url1 = process.env.MONGO_URL1;
+// const password = process.env.MAILPASSWORD;
+// let random = "";
+// let activationString = "";
 
 // mongoose.connect(url1 || process.env.MONGODB_URI1, { useUnifiedTopology: true }, { useNewUrlParser: true })
 
