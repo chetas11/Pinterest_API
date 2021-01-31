@@ -52,7 +52,7 @@ app.options('/addNew', cors())
  });
 })
 
-.post("/login", (req, res)=>{                    // match the username and password
+.post("/login", cors(), (req, res)=>{                    // match the username and password
     MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
             if (err) throw err;
             var dbo = db.db("pinterest");
