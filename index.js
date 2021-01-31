@@ -36,7 +36,7 @@ app.options('/addNew', cors())
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
-    var myobj = { email:data.email, password:data.password, age:data.email };
+    var myobj = {email:data, password:data, age:data};
     dbo.collection("users").insertOne(myobj, function(err) {
         if (err) throw err;
         res.send(req.body);
