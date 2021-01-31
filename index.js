@@ -51,7 +51,7 @@ app.options('/login', cors())
         db.close();
     });
     }else{
-        res.send("Success") 
+        res.send("Failure") 
     }
     });
  });
