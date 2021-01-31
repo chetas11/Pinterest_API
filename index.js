@@ -21,33 +21,36 @@ app.options('/login', cors())
 
 .get("/users", (req, res)=>{  
     MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
+    if (err) console.log(err);
     var dbo = db.db("pinterest");
     dbo.collection("users").findOne({}, function(err, result) {
-        if (err) throw err;
+        if (err) console.log(err);
         console.log(result);
         res.send("Success") 
         db.close();
     });
     });
+
+    
 })
 
 
 .post("/addNew", cors(), (req,res)=>{
     MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
+    if (err) console.log(err);
     var dbo = db.db("pinterest");
     var myobj = {email:req.body.email, password:req.body.password, age:req.body.age};
     var query = { email: req.body.email }
     dbo.collection("users").find(query).toArray(function(err, result){
     if(result.length===0){
     dbo.collection("users").insertOne(myobj, function(err) {
-        if (err) throw err;
+        if (err) console.log(err);
         res.json(req.body);
+        res.send("success")
         db.close();
     });
     }else{
-        throw Error
+        res.send("failure")
     }
     });
  });
@@ -55,22 +58,15 @@ app.options('/login', cors())
 
 .post("/login", cors(), (req, res)=>{                    // match the username and password
     MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
-            if (err) throw err;
+            if (err) console.log(err);
             var dbo = db.db("pinterest");
             var myquery = { email: req.body.email, password: req.body.password};
             dbo.collection("users").find(myquery).toArray(function(err, result) {
-                if (err) throw err;
+               if (err) console.log(err);
                 if(result.length === 0 ){
                     res.send("failed")
                 }else{ 
                     res.send("success")
-                    // const token =  createToken(req.body.email)  // creating a jwt token for logged in session
-                    // res.cookie("jwt", token,{      //creating cookie to store the token         
-                    //     maxAge: 100000000000,
-                    //     httpOnly: false,
-                    //     secure: false
-                    // });
-                    // res.redirect("/home")
                 }
                 res.json(req.body);
                 db.close();
