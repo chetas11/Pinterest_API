@@ -10,14 +10,16 @@ const url = process.env.MONGO_URL;
 app.use(cookieParser())
 app
 .use(bodyParser.urlencoded({extended: true}))
-
+.use(function(req, res, next){
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+    next()
+})
 .get("/", (req, res)=>{ 
-    res.header("Access-Control-Allow-Origin","*");                                     //Login page                                                                          
     res.send("S")
 })
 
 .get("/users", (req, res)=>{  
-    res.header("Access-Control-Allow-Origin","*");                                      //Login page                                                                          
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
@@ -31,7 +33,6 @@ app
 })
 
 .get("/addNew",(req,res)=>{
-    res.header("Access-Control-Allow-Origin","*"); 
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
