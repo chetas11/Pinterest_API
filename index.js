@@ -15,31 +15,31 @@ app
     res.send("S")
 })
 
-// .get("/", (req, res)=>{                                       //Login page                                                                          
-//     MongoClient.connect(url, function(err, db) {
-//     if (err) throw err;
-//     var dbo = db.db("pinterest");
-//     dbo.collection("users").find({}, function(err, result) {
-//         if (err) throw err;
-//         console.log(result);
-//         res.send("Success") 
-//         db.close();
-//     });
-//     });
-// })
+.get("/users", (req, res)=>{                                       //Login page                                                                          
+    MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("pinterest");
+    dbo.collection("users").find({}, function(err, result) {
+        if (err) throw err;
+        console.log(result);
+        res.send("Success") 
+        db.close();
+    });
+    });
+})
 
-// .get("/addNew",(req,res)=>{
-//     MongoClient.connect(url, function(err, db) {
-//     if (err) throw err;
-//     var dbo = db.db("pinterest");
-//     var myobj = { email: req.body.email, password: req.body.password, age:req.body.age  };
-//     dbo.collection("users").insertOne(myobj, function(err, res) {
-//         if (err) throw err;
-//         console.log("1 document inserted");
-//         db.close();
-//     });
-//  });
-// })    
+.get("/addNew",(req,res)=>{
+    MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("pinterest");
+    var myobj = { email: req.body.email, password: req.body.password, age:req.body.age  };
+    dbo.collection("users").insertOne(myobj, function(err, res) {
+        if (err) throw err;
+        console.log("1 document inserted");
+        db.close();
+    });
+ });
+})    
 
 .listen(process.env.PORT);
 
