@@ -35,7 +35,7 @@ app.use(cors())
 })
 
 
-.get("/addNew",(req,res)=>{
+.post("/addNew",(req,res)=>{
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
