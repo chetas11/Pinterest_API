@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const MongoClient = require('mongodb');
 const cookieParser = require('cookie-parser')
 require("dotenv").config();
+const cors = require('cors')
 
 const app = express();
 const url = process.env.MONGO_URL;
@@ -15,6 +16,7 @@ app
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
     next()
 })
+app.use(cors())
 .get("/", (req, res)=>{ 
     res.send("S")
 })
@@ -32,11 +34,12 @@ app
     });
 })
 
+
 .get("/addNew",(req,res)=>{
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
-    var myobj = { email:req.body, password:req.body, age:req.body  };
+    var myobj = { email:"req.body", password:"req.body", age:"req.body"  };
     dbo.collection("users").insertOne(myobj, function(err, res) {
         if (err) throw err;
         res.send("1 document inserted");
