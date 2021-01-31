@@ -39,7 +39,7 @@ app.options('/addNew', cors())
     var myobj = { email:data.email, password:data.password, age:data.age };
     dbo.collection("users").insertOne(myobj, function(err) {
         if (err) throw err;
-        res.send(req.body);
+        res.send(data);
         db.close();
     });
  });
