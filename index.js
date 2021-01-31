@@ -9,6 +9,7 @@ const app = express();
 const url = process.env.MONGO_URL;
 
 app.use(cookieParser())
+app.use(cors())
 app
 .use(bodyParser.urlencoded({extended: true}))
 .use(function(req, res, next){
@@ -16,7 +17,6 @@ app
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
     next()
 })
-app.use(cors())
 .get("/", (req, res)=>{ 
     res.send("S")
 })
