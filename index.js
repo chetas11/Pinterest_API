@@ -47,11 +47,10 @@ app.options('/login', cors())
     dbo.collection("users").insertOne(myobj, function(err) {
         if (err) throw Error
         res.json(req.body);
-        res.status(200) 
         db.close();
     });
     }else{
-        throw Error
+        res.send("Failure")
     }
     });
  });
