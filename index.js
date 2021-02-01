@@ -64,12 +64,11 @@ app.options('/login', cors())
             dbo.collection("users").find(myquery).toArray(function(err, result) {
                if (err) throw Error
                 if(result.length === 0 ){
-                    res.send("failed")
+                    res.send("Failed")
                 }else{ 
-                    res.send("success")
+                   res.json(req.body);
                 }
-                res.json(req.body);
-                db.close();
+                db.close(); 
             });
     });
 })
