@@ -30,8 +30,6 @@ app.options('/login', cors())
         db.close();
     });
     });
-
-    
 })
 
 
@@ -71,6 +69,37 @@ app.options('/login', cors())
                 db.close(); 
             });
     });
+})
+
+.get("/add", (req, res)=>{  
+    MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("pinterest");
+    var myobj = [
+     {
+    img: 'https://www.carlisleaccessories.com.au/media/wysiwyg/Media/Hats2020.jpg',
+    title: 'Breakfast',
+    author: 'jill111',
+    cols: 1,
+    featured: true,
+  },
+  {
+    img: 'https://www.poynter.org/wp-content/uploads/2019/07/shutterstock_264132746.jpg',
+    title: 'Tasty burger',
+    author: 'director90',
+  },
+  {
+    img: 'https://bestmedicinenews.org/wp-content/uploads/best-burger-ever-696x522.jpg',
+    title: 'Camera',
+    author: 'Danson67',
+  },
+  ];
+  dbo.collection("pins").insertMany(myobj, function(err, res) {
+    if (err) throw err;
+    console.log("Number of documents inserted: " + res.insertedCount);
+    db.close();
+    });
+    }); 
 })
 
 .listen(process.env.PORT || 8000);
