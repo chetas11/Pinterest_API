@@ -71,11 +71,24 @@ app.options('/login', cors())
     });
 })
 
+.get("/home/:id", (req, res)=>{  
+    MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("pinterest");
+    var query = { email: req.params.id };
+    dbo.collection("users").find(query).toArray(function(err, result) {
+        if (err) throw err;
+        res.send(result) 
+        db.close();
+    });
+    });
+})
+
 .get("/home", (req, res)=>{  
     MongoClient.connect(url, function(err, db) {
     if (err) throw Error;
     var dbo = db.db("pinterest");
-    dbo.collection("pins").find({}).toArray(function(err, result) {
+    dbo.collection("users").find({}).toArray(function(err, result) {
         if (err) throw Error
         res.send(result) 
         db.close();
