@@ -14,6 +14,8 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.json())
 app.options('/addNew', cors())
 app.options('/login', cors())
+app.options('/home', cors())
+app.options('/home/:id', cors())
 
 .get("/", (req, res)=>{ 
     res.send("S")
@@ -71,7 +73,7 @@ app.options('/login', cors())
     });
 })
 
-.get("/home/:id", (req, res)=>{  
+.get("/home/:id", cors(), (req, res)=>{  
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
@@ -84,7 +86,7 @@ app.options('/login', cors())
     });
 })
 
-.get("/home", (req, res)=>{  
+.get("/home", cors(), (req, res)=>{  
     MongoClient.connect(url, function(err, db) {
     if (err) throw Error;
     var dbo = db.db("pinterest");
