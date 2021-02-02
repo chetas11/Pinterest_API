@@ -88,7 +88,7 @@ app.options('/login', cors())
     MongoClient.connect(url, function(err, db) {
     if (err) throw Error;
     var dbo = db.db("pinterest");
-    dbo.collection("users").find({}).toArray(function(err, result) {
+    dbo.collection("pins").find({}).toArray(function(err, result) {
         if (err) throw Error
         res.send(result) 
         db.close();
