@@ -56,6 +56,27 @@ app.options('/home/:id', cors())
  });
 })
 
+.post("/addPin", cors(), (req,res)=>{
+    MongoClient.connect(url, function(err, db) {
+    if (err) throw Error
+    var dbo = db.db("pinterest");
+    var myobj = {img:req.body.img, title:req.body.title, author:req.body.author};
+    var query = { email: req.body.author}
+    dbo.collection("users").find(query).toArray(function(err, result){
+    if (err) throw Error
+    if(result.length>0){
+    dbo.collection("pins").insertOne(myobj, function(err) {
+        if (err) throw Error
+        res.json(req.body);
+        db.close();
+    });
+    }else{
+        res.send("Failure")
+    }
+    });
+ });
+})
+
 .post("/login", cors(), (req, res)=>{                    // match the username and password
     MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
             if (err) throw Error
