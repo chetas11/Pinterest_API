@@ -107,6 +107,19 @@ app.options('/home/:id', cors())
     });
 })
 
+.put("/home/:id", cors(), (req, res)=>{  
+    MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("pinterest");
+    var query = { author: req.params.id };
+    dbo.collection("pins").find(query).toArray(function(err, result) {
+        if (err) throw err;
+        res.send(result) 
+        db.close();
+    });
+    });
+})
+
 .get("/home", cors(), (req, res)=>{  
     MongoClient.connect(url, function(err, db) {
     if (err) throw Error;
