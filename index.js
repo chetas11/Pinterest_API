@@ -1,7 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const MongoClient = require('mongodb');
+const {createToken} = require("./services/authServices")
 const cookieParser = require('cookie-parser')
+const authMiddleWare = require("./services/authMiddleware")
 require("dotenv").config();
 const cors = require('cors')
 const app = express();
@@ -56,7 +58,7 @@ app.options('/home/:id', cors())
  });
 })
 
-.post("/addPin", cors(), (req,res)=>{
+.post("/addPin", authMiddleWare, cors(), (req,res)=>{
     MongoClient.connect(url, function(err, db) {
     if (err) throw Error
     var dbo = db.db("pinterest");
@@ -88,13 +90,19 @@ app.options('/home/:id', cors())
                     res.send("Failed")
                 }else{ 
                    res.json(req.body);
+                   const token =  createToken(req.body.email)  // creating a jwt token for logged in session
+                    res.cookie("jwt", token,{                 //creating cookie to store the token         
+                        maxAge: 100000000000,
+                        httpOnly: false,
+                        secure: false
+                    })
                 }
                 db.close(); 
             });
     });
 })
 
-.get("/home/:id", cors(), (req, res)=>{  
+.get("/home/:id", authMiddleWare, cors(), (req, res)=>{  
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
@@ -107,7 +115,7 @@ app.options('/home/:id', cors())
     });
 })
 
-.put("/home/:id", cors(), (req, res)=>{  
+.put("/home/:id", authMiddleWare, cors(), (req, res)=>{  
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
@@ -120,7 +128,7 @@ app.options('/home/:id', cors())
     });
 })
 
-.get("/home", cors(), (req, res)=>{  
+.get("/home", authMiddleWare, cors(), (req, res)=>{  
     MongoClient.connect(url, function(err, db) {
     if (err) throw Error;
     var dbo = db.db("pinterest");
