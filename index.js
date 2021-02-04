@@ -58,7 +58,7 @@ app.options('/home/:id', cors())
  });
 })
 
-.post("/addPin", authMiddleWare, cors(), (req,res)=>{
+.post("/addPin", cors(), (req,res)=>{
     MongoClient.connect(url, function(err, db) {
     if (err) throw Error
     var dbo = db.db("pinterest");
@@ -102,7 +102,7 @@ app.options('/home/:id', cors())
     });
 })
 
-.get("/home/:id", authMiddleWare, cors(), (req, res)=>{  
+.get("/home/:id", cors(), (req, res)=>{  
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
@@ -115,7 +115,7 @@ app.options('/home/:id', cors())
     });
 })
 
-.put("/home/:id", authMiddleWare, cors(), (req, res)=>{  
+.put("/home/:id", cors(), (req, res)=>{  
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
@@ -128,7 +128,7 @@ app.options('/home/:id', cors())
     });
 })
 
-.get("/home", authMiddleWare, cors(), (req, res)=>{  
+.get("/home", cors(), (req, res)=>{  
     MongoClient.connect(url, function(err, db) {
     if (err) throw Error;
     var dbo = db.db("pinterest");
