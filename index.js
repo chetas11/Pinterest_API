@@ -1,9 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const MongoClient = require('mongodb');
-const {createToken} = require("./services/authServices")
 const cookieParser = require('cookie-parser')
-const authMiddleWare = require("./services/authMiddleware")
 require("dotenv").config();
 const cors = require('cors')
 const app = express();
@@ -90,12 +88,6 @@ app.options('/home/:id', cors())
                     res.send("Failed")
                 }else{ 
                    res.json(req.body);
-                   const token =  createToken(req.body.email)  // creating a jwt token for logged in session
-                    res.cookie("jwt", token,{                 //creating cookie to store the token         
-                        maxAge: 100000000000,
-                        httpOnly: false,
-                        secure: false
-                    })
                 }
                 db.close(); 
             });
