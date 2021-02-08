@@ -76,7 +76,7 @@ app.options('/home/:id', cors())
 
         const mailOptions = {
         from:'Account Verification<crmconfirmation.noreply@gmail.com>',
-        to:'cbirmole@gmail.com',
+        to:req.body.email,
         subject:'Account verification',
         text:'Hello, '+ req.body.email + '\n\n'+
                     'You are receiving this because you (or someone else) have requested sign up for Pinterest Service.\n\n' +
