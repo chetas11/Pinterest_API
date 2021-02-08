@@ -4,9 +4,19 @@ const MongoClient = require('mongodb');
 const cookieParser = require('cookie-parser')
 require("dotenv").config();
 const cors = require('cors')
+const nodemailer = require('nodemailer')
+const { google } = require('googleapis')
+let randomstring = require("randomstring");
+let activationString =""
+
 const app = express();
 const url = process.env.MONGO_URL;
-
+const CLEINT_ID = process.env.CLEINT_ID
+const CLIENT_SECRET = process.env.CLIENT_SECRET
+const REDIRECT_URI = process.env.REDIRECT_URI
+const REFRESH_TOKEN =  process.env.REFRESH_TOKEN
+const oAuth2Client = new google.auth.OAuth2(CLEINT_ID, CLIENT_SECRET, REDIRECT_URI)
+oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN})
 
 app.use(cors())
 app.use(cookieParser())
@@ -48,6 +58,41 @@ app.options('/home/:id', cors())
         if (err) throw Error
         res.json(req.body);
         db.close();
+    async function sendMail(){
+    try{
+        activationString = randomstring.generate();
+        const accessToken = await oAuth2Client.getAccessToken()
+        const transport  = nodemailer.createTransport({
+            service:'gmail',
+            auth:{
+                type: 'OAuth2',
+                user:'crmconfirmation.noreply@gmail.com',
+                clientId: CLEINT_ID,
+                clientSecret: CLIENT_SECRET,
+                refreshToken: REFRESH_TOKEN,
+                accessToken:accessToken
+            }
+        })
+
+        const mailOptions = {
+        from:'Account Verification<crmconfirmation.noreply@gmail.com>',
+        to:'cbirmole@gmail.com',
+        subject:'Account verification',
+        text:'Hello, '+ req.body.email + '\n\n'+
+                    'You are receiving this because you (or someone else) have requested sign up for Pinterest Service.\n\n' +
+                    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                    'http://' + req.headers.host + '/activate/' + activationString + '\n\n' +
+                    'If you did not request this, please ignore this email.\n'
+    }
+
+        const result =  await transport.sendMail(mailOptions)
+        return result
+
+        }catch(e){
+            return e
+        }
+    }
+    sendMail().then(result => console.log(result))
     });
     }else{
         res.send("Failure")
