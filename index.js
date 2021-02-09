@@ -188,7 +188,6 @@ app.options('/home/:id', cors())
                     dbo.collection("users").updateOne(query, myquery, function(err, res) {
                         if (err) throw err;
                         db.close();
-                        res.send("Success")
                     });
                 }else{
                     res.send("Failed")           
