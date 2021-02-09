@@ -46,10 +46,11 @@ app.options('/home/:id', cors())
 
 
 .post("/addNew", cors(), (req,res)=>{
+    activationString = randomstring.generate();
     MongoClient.connect(url, function(err, db) {
     if (err) throw Error
     var dbo = db.db("pinterest");
-    var myobj = {firstname:req.body.firstname,lastname:req.body.lastname, email:req.body.email, password:req.body.password, age:req.body.age};
+    var myobj = {firstname:req.body.firstname,lastname:req.body.lastname, email:req.body.email, password:req.body.password, age:req.body.age, activationTimer:Date.now() + 600000, activationString: activationString};
     var query = { email: req.body.email }
     dbo.collection("users").find(query).toArray(function(err, result){
     if (err) throw Error
@@ -60,7 +61,6 @@ app.options('/home/:id', cors())
         db.close();
     async function sendMail(){
     try{
-        activationString = randomstring.generate();
         const accessToken = await oAuth2Client.getAccessToken()
         const transport  = nodemailer.createTransport({
             service:'gmail',
@@ -175,6 +175,26 @@ app.options('/home/:id', cors())
         db.close();
     });
     });
+})
+
+.get('/activate/:token', function(req, res) {             
+    MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("pinterest");
+            var query = { activationString : req.params.token, activationTimer: { $gt: Date.now() } };
+            var myquery = { $set: {activationString: "Activated"} };
+            dbo.collection("users").find(query).toArray(function(err, result) {
+                if(result.length > 0){
+                    dbo.collection("users").updateOne(query, myquery, function(err, res) {
+                        if (err) throw err;
+                        db.close();
+                        res.send("Success")
+                    });
+                }else{
+                    res.send("Failed")           
+                }
+            });
+        });
 })
 
 .listen(process.env.PORT || 8000);
