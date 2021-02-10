@@ -28,7 +28,7 @@ app.options('/home', cors())
 app.options('/home/:id', cors())
 
 .get("/", (req, res)=>{ 
-    res.send("S")
+    res.redirect("http://localhost:1234")
 })
 
 .get("/users", (req, res)=>{  
