@@ -186,10 +186,10 @@ app.options('/home/:id', cors())
             dbo.collection("users").find(query).toArray(function(err, result) {
                 if(result.length > 0){
                     dbo.collection("users").updateOne(query, myquery, function(err, res) {
-                        res.send("Success")
                         if (err) throw err;
                         db.close();
                     });
+                res.redirect("/")
                 }else{
                     res.send("Failed")           
                 }
