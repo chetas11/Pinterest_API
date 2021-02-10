@@ -126,7 +126,7 @@ app.options('/home/:id', cors())
     MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
             if (err) throw Error
             var dbo = db.db("pinterest");
-            var myquery = { email: req.body.email, password: req.body.password};
+            var myquery = { email: req.body.email, password: req.body.password, activationString:"Activated"};
             dbo.collection("users").find(myquery).toArray(function(err, result) {
                if (err) throw Error
                 if(result.length === 0 ){
