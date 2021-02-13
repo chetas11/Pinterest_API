@@ -197,5 +197,56 @@ app.options('/home/:id', cors())
         });
 })
 
+
+.post("/resetpassword", cors(), (req,res)=>{
+    activationString = randomstring.generate();
+    MongoClient.connect(url, function(err, db) {
+    if (err) throw Error
+    var dbo = db.db("pinterest");
+    var query = { email: req.body.email }
+    dbo.collection("users").find(query).toArray(function(err, result){
+    if (err) throw Error
+    if(result.length!==0){
+    async function sendMail(){
+    try{
+        const accessToken = await oAuth2Client.getAccessToken()
+        const transport  = nodemailer.createTransport({
+            service:'gmail',
+            auth:{
+                type: 'OAuth2',
+                user:'crmconfirmation.noreply@gmail.com',
+                clientId: CLEINT_ID,
+                clientSecret: CLIENT_SECRET,
+                refreshToken: REFRESH_TOKEN,
+                accessToken:accessToken
+            }
+        })
+
+        const mailOptions = {
+        from:'Account Verification<crmconfirmation.noreply@gmail.com>',
+        to:req.body.email,
+        subject:'Account verification',
+        text:'Hello, '+ req.body.email + '\n\n'+
+                    'You are receiving this because you (or someone else) have requested reset the password for Pinterest Service.\n\n' +
+                    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                    'http://' + req.headers.host + '/activate/' + activationString + '\n\n' +
+                    'If you did not request passsword change, please ignore this email.\n'
+    }
+
+        const result =  await transport.sendMail(mailOptions)
+        return result
+
+        }catch(e){
+            return e
+        }
+    }
+    sendMail()
+    }else{
+        res.send("Failure")
+    }
+    });
+ });
+})
+
 .listen(process.env.PORT || 8000);
 
