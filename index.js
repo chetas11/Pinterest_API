@@ -26,6 +26,7 @@ app.options('/addNew', cors())
 app.options('/login', cors())
 app.options('/home', cors())
 app.options('/home/:id', cors())
+app.options('/resetpassword', cors())
 
 .get("/", (req, res)=>{ 
     res.redirect("http://localhost:1234")
