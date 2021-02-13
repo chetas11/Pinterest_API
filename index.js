@@ -237,11 +237,13 @@ app.options('/resetpassword', cors())
         const result =  await transport.sendMail(mailOptions)
         return result
 
+
         }catch(e){
             return e
         }
     }
     sendMail()
+    res.send("Success")
     }else{
         res.send("Failure")
     }
