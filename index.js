@@ -228,6 +228,16 @@ app.options('/resetpassword', cors())
     dbo.collection("users").find(query).toArray(function(err, result){
     if (err) throw Error
     if(result.length!==0){
+    MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("pinterest");
+        var myquery = { email: req.body.email };
+        var newvalues = { $set: {activationString: activationString , activationTimer : Date.now() + 600000 } }; // Set the expiration time to 10 mins
+        dbo.collection("users").updateOne(myquery, newvalues, function(err, res) {
+            if (err) throw err;
+            db.close();
+        });
+    });
     async function sendMail(){
     try{
         const accessToken = await oAuth2Client.getAccessToken()
@@ -264,16 +274,7 @@ app.options('/resetpassword', cors())
     }
     sendMail()
     res.send("Success")
-    MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
-            if (err) throw err;
-            var dbo = db.db("pinterest");
-            var myquery = { email: req.body.email };
-            var newvalues = { $set: {activationString: random , activationTimer : Date.now() + 600000 } }; // Set the expiration time to 10 mins
-            dbo.collection("users").updateOne(myquery, newvalues, function(err, res) {
-                if (err) throw err;
-                db.close();
-            });
-    });
+    
     }else{
         res.send("Failure")
     }
