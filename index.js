@@ -198,6 +198,26 @@ app.options('/resetpassword', cors())
         });
 })
 
+.get('/reset/:token', function(req, res) {             
+    MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("pinterest");
+            var query = { activationString : req.params.token, activationTimer: { $gt: Date.now() } };
+            var myquery = { $set: {activationString: "Activated"} };
+            dbo.collection("users").find(query).toArray(function(err, result) {
+                if(result.length > 0){
+                    dbo.collection("users").updateOne(query, myquery, function(err, res) {
+                        if (err) throw err;
+                        db.close();
+                    });
+                res.send("Success") 
+                }else{
+                    res.send("Failed")           
+                }
+            });
+        });
+})
+
 
 .post("/resetpassword", cors(), (req,res)=>{
     activationString = randomstring.generate();
@@ -230,7 +250,7 @@ app.options('/resetpassword', cors())
         text:'Hello, '+ req.body.email + '\n\n'+
                     'You are receiving this because you (or someone else) have requested reset the password for Pinterest Service.\n\n' +
                     'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                    'http://' + req.headers.host + '/activate/' + activationString + '\n\n' +
+                    'http://' + req.headers.host + '/reset/' + activationString + '\n\n' +
                     'If you did not request passsword change, please ignore this email.\n'
     }
 
@@ -244,6 +264,16 @@ app.options('/resetpassword', cors())
     }
     sendMail()
     res.send("Success")
+    MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("pinterest");
+            var myquery = { email: req.body.email };
+            var newvalues = { $set: {activationString: random , activationTimer : Date.now() + 600000 } }; // Set the expiration time to 10 mins
+            dbo.collection("users").updateOne(myquery, newvalues, function(err, res) {
+                if (err) throw err;
+                db.close();
+            });
+    });
     }else{
         res.send("Failure")
     }
