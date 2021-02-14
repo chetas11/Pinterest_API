@@ -32,6 +32,11 @@ app.options('/resetpassword', cors())
     res.redirect("http://localhost:1234")
 })
 
+.get("/update", (req, res)=>{ 
+    res.redirect("http://localhost:1234/update")
+})
+
+
 .get("/users", (req, res)=>{  
     MongoClient.connect(url, function(err, db) {
     if (err) console.log(err);
@@ -210,7 +215,7 @@ app.options('/resetpassword', cors())
                         if (err) throw err;
                         db.close();
                     });
-                res.send("Success") 
+                res.redirect("/update")
                 }else{
                     res.send("Failed")           
                 }
