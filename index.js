@@ -28,6 +28,7 @@ app.options('/login', cors())
 app.options('/home', cors())
 app.options('/home/:id', cors())
 app.options('/resetpassword', cors())
+app.options('/changepassword', cors())
 
 .get("/", (req, res)=>{ 
     res.redirect("http://localhost:1234")
@@ -108,7 +109,7 @@ app.options('/resetpassword', cors())
  });
 })
 
-.post("/changepassword",(req, res)=>{                         // Change Password form                        
+.post("/changepassword",cors(), (req, res)=>{                         // Change Password form                        
    if(req.body.password === req.body.confirmpassword){
         MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
             if (err) throw err;
@@ -283,9 +284,9 @@ app.options('/resetpassword', cors())
         })
 
         const mailOptions = {
-        from:'Account Verification<crmconfirmation.noreply@gmail.com>',
+        from:'Password Reset<crmconfirmation.noreply@gmail.com>',
         to:req.body.email,
-        subject:'Account verification',
+        subject:'Password Reset',
         text:'Hello, '+ req.body.email + '\n\n'+
                     'You are receiving this because you (or someone else) have requested reset the password for Pinterest Service.\n\n' +
                     'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
