@@ -130,6 +130,7 @@ app.options('/changepassword', cors())
             });
             });
         });
+    res.send("Success")
    }else{
        res.send("Failed")
    }
