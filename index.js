@@ -109,18 +109,18 @@ app.options('/changepassword', cors())
  });
 })
 
-.post("/changepassword", cors(), (req, res)=>{                         // Change Password form                        
+.post("/changepassword", cors(), (req, res)=>{                                            
    if(req.body.password === req.body.confirmpassword){
         MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
             if (err) throw err;
-            var dbo = db.db("pinterest");                           // Change Password for the specified user
+            var dbo = db.db("pinterest");                           
             var myquery = { PasswordString: PasswordString };
             var newvalues = { $set: {password : req.body.password } };
             dbo.collection("users").updateOne(myquery, newvalues, function(err, res) {
                 if (err) throw err;
-            });  
+            }); 
+            res.send("Success")
         });
-    res.send("Success")
    }else{
        res.send("Failed")
    }
