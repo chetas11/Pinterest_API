@@ -119,10 +119,10 @@ app.options('/changepassword', cors())
             dbo.collection("users").updateOne(myquery, newvalues, function(err, res) {
                 if (err) throw err;
                 console.log("1 document updated");
-                res.send("Su")
                 db.close();
             }); 
         });
+        res.send("done")
    }else{
        res.send("Failed")
    }
