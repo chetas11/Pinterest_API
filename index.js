@@ -109,7 +109,7 @@ app.options('/changepassword', cors())
  });
 })
 
-.post("/changepassword",cors(), (req, res)=>{                         // Change Password form                        
+.post("/changepassword", cors(), (req, res)=>{                         // Change Password form                        
    if(req.body.password === req.body.confirmpassword){
         MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
             if (err) throw err;
@@ -130,7 +130,6 @@ app.options('/changepassword', cors())
             });
             });
         });
-    res.sendFile("/")
    }else{
        res.send("Failed")
    }
