@@ -118,7 +118,9 @@ app.options('/changepassword', cors())
             var newvalues = { $set: {password : "" } };
             dbo.collection("users").updateOne(myquery, newvalues, function(err, res) {
                 if (err) throw err;
-                res.send("Success")
+                console.log("1 document updated");
+                res.send("Su")
+                db.close();
             }); 
         });
    }else{
