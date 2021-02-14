@@ -118,17 +118,7 @@ app.options('/changepassword', cors())
             var newvalues = { $set: {password : req.body.password } };
             dbo.collection("users").updateOne(myquery, newvalues, function(err, res) {
                 if (err) throw err;
-                MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
-                if (err) throw err;                                    
-                var dbo = db.db("pinterest");           
-                var myquery = { PasswordString: PasswordString };
-                var newvalues = { $set: {PasswordString : "" } };                           // removing the random string
-                dbo.collection("users").updateOne(myquery, newvalues, function(err, res) {
-                    if (err) throw err;
-                    db.close();
-                });
-            });
-            });
+            });  
         });
     res.send("Success")
    }else{
