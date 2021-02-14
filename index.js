@@ -115,7 +115,7 @@ app.options('/changepassword', cors())
             if (err) throw err;
             var dbo = db.db("pinterest");                           
             var myquery = { PasswordString: PasswordString };
-            var newvalues = { $set: {password : "changed" ,PasswordString: "" } };
+            var newvalues = { $set: {password : req.body.password ,PasswordString: "" } };
             dbo.collection("users").updateOne(myquery, newvalues, function(err, res) {
                 if (err) throw err;
                 console.log("1 document updated");
