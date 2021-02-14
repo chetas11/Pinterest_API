@@ -242,7 +242,7 @@ app.options('/changepassword', cors())
 
 
 .post("/resetpassword", cors(), (req,res)=>{
-    let PasswordString = randomstring.generate();
+    PasswordString = randomstring.generate();
     MongoClient.connect(url, function(err, db) {
     if (err) throw Error
     var dbo = db.db("pinterest");
