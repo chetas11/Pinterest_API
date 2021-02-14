@@ -57,7 +57,7 @@ app.options('/resetpassword', cors())
     MongoClient.connect(url, function(err, db) {
     if (err) throw Error
     var dbo = db.db("pinterest");
-    var myobj = {firstname:req.body.firstname,lastname:req.body.lastname, email:req.body.email, password:req.body.password, age:req.body.age, activationTimer:Date.now() + 600000, activationString: activationString};
+    var myobj = {firstname:req.body.firstname,lastname:req.body.lastname, email:req.body.email, password:req.body.password, age:req.body.age, activationTimer:Date.now() + 600000, activationString: activationString, PasswordString:PasswordString};
     var query = { email: req.body.email }
     dbo.collection("users").find(query).toArray(function(err, result){
     if (err) throw Error
