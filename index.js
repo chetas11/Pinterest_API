@@ -31,11 +31,11 @@ app.options('/resetpassword', cors())
 app.options('/changepassword', cors())
 
 .get("/", (req, res)=>{ 
-    res.redirect("http://localhost:1234")
+    res.redirect("https://pinterest-app.netlify.app/")
 })
 
 .get("/update", (req, res)=>{ 
-    res.redirect("http://localhost:1234/update")
+    res.redirect("https://pinterest-app.netlify.app/update")
 })
 
 
