@@ -34,10 +34,6 @@ app.options('/changepassword', cors())
     res.redirect("https://pinterest-app.netlify.app/")
 })
 
-.get("/update", (req, res)=>{ 
-    res.redirect("https://pinterest-app.netlify.app/update")
-})
-
 
 .get("/users", (req, res)=>{  
     MongoClient.connect(url, function(err, db) {
@@ -232,7 +228,7 @@ app.options('/changepassword', cors())
             var query = { PasswordString : req.params.token, activationTimer: { $gt: Date.now() } };
             dbo.collection("users").find(query).toArray(function(err, result) {
                 if(result.length > 0){
-                res.redirect("/update")
+                res.redirect("https://pinterest-app.netlify.app/update")
                 }else{
                     res.send("Failed")           
                 }
