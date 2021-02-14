@@ -8,6 +8,7 @@ const nodemailer = require('nodemailer')
 const { google } = require('googleapis')
 let randomstring = require("randomstring");
 let activationString =""
+let PasswordString =""
 
 const app = express();
 const url = process.env.MONGO_URL;
@@ -105,6 +106,34 @@ app.options('/resetpassword', cors())
     }
     });
  });
+})
+
+.post("/changepassword",(req, res)=>{                         // Change Password form                        
+   if(req.body.Password === req.body.ConfirmPassword){
+        MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("pinterest");                           // Change Password for the specified user
+            var myquery = { activationString: activationString };
+            var newvalues = { $set: {password : req.body.Password } };
+            dbo.collection("users").updateOne(myquery, newvalues, function(err, res) {
+                if (err) throw err;
+                MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
+                if (err) throw err;                                    
+                var dbo = db.db("pinterest");           
+                var myquery = { tempString: random };
+                var newvalues = { $set: {tempString : "" } };                           // removing the random string
+                dbo.collection("users").updateOne(myquery, newvalues, function(err, res) {
+                    if (err) throw err;
+                    db.close();
+                });
+            });
+            });
+        });
+    res.sendFile(__dirname+"/public/passwordChanged.html")
+   }else{
+       res.sendFile(__dirname+"/public/mismatch.html")
+   }
+   
 })
 
 .post("/addPin", cors(), (req,res)=>{
@@ -207,8 +236,8 @@ app.options('/resetpassword', cors())
     MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
             if (err) throw err;
             var dbo = db.db("pinterest");
-            var query = { activationString : req.params.token, activationTimer: { $gt: Date.now() } };
-            var myquery = { $set: {activationString: "Activated"} };
+            var query = { PasswordString : req.params.token, activationTimer: { $gt: Date.now() } };
+            var myquery = { $set: {PasswordString: "Changed"} };
             dbo.collection("users").find(query).toArray(function(err, result) {
                 if(result.length > 0){
                     dbo.collection("users").updateOne(query, myquery, function(err, res) {
@@ -225,7 +254,7 @@ app.options('/resetpassword', cors())
 
 
 .post("/resetpassword", cors(), (req,res)=>{
-    let activationString = randomstring.generate();
+    let PasswordString = randomstring.generate();
     MongoClient.connect(url, function(err, db) {
     if (err) throw Error
     var dbo = db.db("pinterest");
@@ -237,7 +266,7 @@ app.options('/resetpassword', cors())
         if (err) throw err;
         var dbo = db.db("pinterest");
         var myquery = { email: req.body.email };
-        var newvalues = { $set: {activationString: activationString , activationTimer : Date.now() + 600000 } }; // Set the expiration time to 10 mins
+        var newvalues = { $set: {PasswordString: PasswordString , activationTimer : Date.now() + 600000 } }; // Set the expiration time to 10 mins
         dbo.collection("users").updateOne(myquery, newvalues, function(err, res) {
             if (err) throw err;
             db.close();
