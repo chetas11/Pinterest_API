@@ -109,19 +109,19 @@ app.options('/resetpassword', cors())
 })
 
 .post("/changepassword",(req, res)=>{                         // Change Password form                        
-   if(req.body.Password === req.body.ConfirmPassword){
+   if(req.body.password === req.body.confirmpassword){
         MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
             if (err) throw err;
             var dbo = db.db("pinterest");                           // Change Password for the specified user
-            var myquery = { activationString: activationString };
-            var newvalues = { $set: {password : req.body.Password } };
+            var myquery = { PasswordString: PasswordString };
+            var newvalues = { $set: {password : req.body.password } };
             dbo.collection("users").updateOne(myquery, newvalues, function(err, res) {
                 if (err) throw err;
                 MongoClient.connect(url || process.env.MONGODB_URI, { useUnifiedTopology: true }, function(err, db) {
                 if (err) throw err;                                    
                 var dbo = db.db("pinterest");           
-                var myquery = { tempString: random };
-                var newvalues = { $set: {tempString : "" } };                           // removing the random string
+                var myquery = { PasswordString: PasswordString };
+                var newvalues = { $set: {PasswordString : "" } };                           // removing the random string
                 dbo.collection("users").updateOne(myquery, newvalues, function(err, res) {
                     if (err) throw err;
                     db.close();
@@ -129,9 +129,9 @@ app.options('/resetpassword', cors())
             });
             });
         });
-    res.sendFile(__dirname+"/public/passwordChanged.html")
+    res.sendFile("/")
    }else{
-       res.sendFile(__dirname+"/public/mismatch.html")
+       res.send("Failed")
    }
    
 })
@@ -237,13 +237,8 @@ app.options('/resetpassword', cors())
             if (err) throw err;
             var dbo = db.db("pinterest");
             var query = { PasswordString : req.params.token, activationTimer: { $gt: Date.now() } };
-            var myquery = { $set: {PasswordString: "Changed"} };
             dbo.collection("users").find(query).toArray(function(err, result) {
                 if(result.length > 0){
-                    dbo.collection("users").updateOne(query, myquery, function(err, res) {
-                        if (err) throw err;
-                        db.close();
-                    });
                 res.redirect("/update")
                 }else{
                     res.send("Failed")           
@@ -294,7 +289,7 @@ app.options('/resetpassword', cors())
         text:'Hello, '+ req.body.email + '\n\n'+
                     'You are receiving this because you (or someone else) have requested reset the password for Pinterest Service.\n\n' +
                     'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                    'http://' + req.headers.host + '/reset/' + activationString + '\n\n' +
+                    'http://' + req.headers.host + '/reset/' + PasswordString + '\n\n' +
                     'If you did not request passsword change, please ignore this email.\n'
     }
 
