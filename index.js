@@ -245,7 +245,7 @@ app.options('/delete', cors())
     var myquery = { _id: mongodb.ObjectID(req.body.id) };
     dbo.collection("pins").deleteOne(myquery, function(err, obj) {
         if (err) res.send("err");
-        res.send(req.body.id)
+        res.send("Deleted")
         db.close();
     });
     });
