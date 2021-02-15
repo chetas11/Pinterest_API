@@ -242,7 +242,7 @@ app.options('/delete', cors())
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
-    var myquery = { _id: req.body.id };
+    var myquery = { _id: mongodb.ObjectID(req.body.id) };
     dbo.collection("pins").deleteOne(myquery, function(err, obj) {
         if (err) res.send("err");
         res.send(req.body.id)
