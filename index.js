@@ -238,13 +238,14 @@ app.options('/delete', cors())
 })
 
 
-.post('/delete', function(req, res) {             
+.post('/delete',cors(), function(req, res) {             
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
     var myquery = { _id: req.body.id };
     dbo.collection("pins").deleteOne(myquery, function(err, obj) {
-        if (err) throw err;
+        if (err) res.send(err);
+        res.send("Deleted")
         db.close();
     });
     });
