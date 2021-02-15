@@ -29,6 +29,7 @@ app.options('/home', cors())
 app.options('/home/:id', cors())
 app.options('/resetpassword', cors())
 app.options('/changepassword', cors())
+app.options('/delete', cors())
 
 .get("/", (req, res)=>{ 
     res.redirect("https://pinterest-app.netlify.app/")
@@ -234,6 +235,19 @@ app.options('/changepassword', cors())
                 }
             });
         });
+})
+
+
+.post('/delete', function(req, res) {             
+    MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("pinterest");
+    var myquery = { _id: req.body.id };
+    dbo.collection("pins").deleteOne(myquery, function(err, obj) {
+        if (err) throw err;
+        db.close();
+    });
+    });
 })
 
 
