@@ -244,8 +244,8 @@ app.options('/delete', cors())
     var dbo = db.db("pinterest");
     var myquery = { _id: req.body.id };
     dbo.collection("pins").deleteOne(myquery, function(err, obj) {
-        if (err) res.send(err);
-        res.json(req.body);
+        if (err) res.send("err");
+        res.send(req.body.id)
         db.close();
     });
     });
