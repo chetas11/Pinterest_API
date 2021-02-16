@@ -238,7 +238,7 @@ app.options('/delete', cors())
 })
 
 
-.delete('/delete',cors(), function(req, res) {             
+.post('/delete',cors(), function(req, res) {             
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
