@@ -184,7 +184,7 @@ app.options('/delete', cors())
     var query = { author: req.params.id };
     dbo.collection("pins").find(query).toArray(function(err, result) {
         if (err) throw err;
-        res.send(result) 
+        res.json(req.body);
         db.close();
     });
     });
