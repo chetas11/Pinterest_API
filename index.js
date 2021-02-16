@@ -244,10 +244,7 @@ app.options('/delete', cors())
     var dbo = db.db("pinterest");
     var myquery = { _id: mongodb.ObjectID(req.body.id) };
     dbo.collection("pins").deleteOne(myquery, function(err, obj) {
-        if (err) {
-            console.log(err);
-            res.send("failed")
-        }
+        if (err) res.send("Failed");
         res.json(req.body);
         db.close();
     });
