@@ -184,7 +184,7 @@ app.options('/delete', cors())
     var query = { author: req.params.id };
     dbo.collection("pins").find(query).toArray(function(err, result) {
         if (err) throw err;
-        res.json(req.body);
+        res.send(result) 
         db.close();
     });
     });
@@ -245,7 +245,7 @@ app.options('/delete', cors())
     var myquery = { _id: mongodb.ObjectID(req.body.id) };
     dbo.collection("pins").deleteOne(myquery, function(err, obj) {
         if (err) res.send("err");
-        res.send("Deleted")
+        res.json(req.body);
         db.close();
     });
     });
