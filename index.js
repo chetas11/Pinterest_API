@@ -238,7 +238,7 @@ app.options('/delete', cors())
 })
 
 
-.post('/delete',cors(), function(req, res) {             
+.delete('/delete',cors(), function(req, res) {             
     MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("pinterest");
@@ -246,7 +246,7 @@ app.options('/delete', cors())
     dbo.collection("pins").deleteOne(myquery, function(err, obj) {
         if (err) {
             console.log(err);
-            res.send*"failed"
+            res.send("failed")
         }
         res.json(req.body);
         db.close();
