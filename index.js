@@ -29,12 +29,8 @@ app.options('/home', cors())
 app.options('/home/:id', cors())
 app.options('/resetpassword', cors())
 app.options('/changepassword', cors())
-app.options('/delete', cors())
+// app.options('/delete', cors())
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
 
 .get("/", (req, res)=>{ 
     res.redirect("https://pinterest-app.netlify.app/")
@@ -243,18 +239,18 @@ app.use((req, res, next) => {
 })
 
 
-.post('/delete',cors(), function(req, res) {             
-    MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    var dbo = db.db("pinterest");
-    var myquery = { _id: mongodb.ObjectID(req.body.id) };
-    dbo.collection("pins").deleteOne(myquery, function(err, obj) {
-        if (err) res.send("Failed");
-        res.json(req.body);
-        db.close();
-    });
-    });
-})
+// .post('/delete',cors(), function(req, res) {             
+//     MongoClient.connect(url, function(err, db) {
+//     if (err) throw err;
+//     var dbo = db.db("pinterest");
+//     var myquery = { _id: mongodb.ObjectID(req.body.id) };
+//     dbo.collection("pins").deleteOne(myquery, function(err, obj) {
+//         if (err) res.send("Failed");
+//         res.json(req.body);
+//         db.close();
+//     });
+//     });
+// })
 
 
 .post("/resetpassword", cors(), (req,res)=>{
