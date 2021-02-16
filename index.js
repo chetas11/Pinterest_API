@@ -31,6 +31,11 @@ app.options('/resetpassword', cors())
 app.options('/changepassword', cors())
 app.options('/delete', cors())
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 .get("/", (req, res)=>{ 
     res.redirect("https://pinterest-app.netlify.app/")
 })
