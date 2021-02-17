@@ -217,7 +217,7 @@ app.options('/delete', cors())
                     });
                 res.redirect("/")
                 }else{
-                    res.send("Failed")           
+                    res.redirect("https://pinterest-app.netlify.app/expired")       
                 }
             });
         });
@@ -232,7 +232,7 @@ app.options('/delete', cors())
                 if(result.length > 0){
                 res.redirect("https://pinterest-app.netlify.app/update")
                 }else{
-                    res.send("Failed")           
+                    res.redirect("https://pinterest-app.netlify.app/expired")       
                 }
             });
         });
